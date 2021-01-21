@@ -1,6 +1,6 @@
-import './App.css';
+import "./App.css";
 
-import Planets from '../Planets';
+import Planets from "../Planets";
 
 const App = () => {
   return (
@@ -9,6 +9,6 @@ const App = () => {
       <Planets />
     </div>
   );
-}
+};
 
 export default App;
