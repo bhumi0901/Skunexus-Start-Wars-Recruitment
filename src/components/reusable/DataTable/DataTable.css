@@ -1,0 +1,25 @@
+.text-right {
+  text-align: right;
+}
+.backButton {
+  align-items: center;
+  display: flex;
+  margin: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+button {
+  margin: 10px auto;
+}
+.table-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 60px;
+}
+.table-heading {
+  font-weight: bold;
+  font-size: 25px;
+}

@@ -1,225 +1,133 @@
-import './Planets.css';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from "react";
+import "./Planets.css";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import PlanetForm from "../PlanetForm";
+import DataTable from "../reusable/DataTable";
+import { Alert } from "reactstrap";
+import { getPlanet } from "../../actions";
+let display = [];
+function Planets(props) {
+  const [modal, setModal] = useState(false);
+  const [isAlert, setIsAlert] = useState(false);
+  const [displayArray, setDisplayArray] = useState([]);
+  const [header, setHeader] = useState([]);
+  const getPlanet = () => {
+    setDisplayArray([]);
 
-import Grid from '../Grid';
+    props.getPlanet().then((res) => {
+      const header = [
+        ["Name", "text"],
+        ["Rotation period", "number"],
+        ["Orbital period", "number"],
+        ["Diameter", "number"],
+        ["Climate", "text"],
+        ["Gravity", "text"],
+        ["Terrain", "text"],
+        ["Surface water", "number"],
+        ["Population", "number"],
+        ["Residents", "number"],
+        ["Films", "number"],
+        ["Action", "text"],
+      ];
+      setHeader(header);
+      res.results &&
+        res.results.forEach((obj, key) => {
+          delete obj.edited;
+          delete obj.created;
+          if (obj.films) {
+            obj.films = obj.films.length;
+          }
+          if (obj.residents) {
+            obj.residents = obj.residents.length;
+          }
+          if (key === 2) {
+            obj.url = <>-</>;
+          } else {
+            obj.url = (
+              <>
+                <button
+                  className="btn btn-dark mb-2"
+                  id={obj.url}
+                  onClick={(e) => redirect(e, key + 1, "films")}
+                  disabled={obj.films > 0 ? "" : "disabled"}
+                >
+                  Go to Films
+                </button>
+                <button
+                  className="btn btn-secondary mb-2"
+                  id={obj.url}
+                  onClick={(e) => redirect(e, key + 1, "recidents")}
+                  disabled={obj.residents > 0 ? "" : "disabled"}
+                >
+                  Go to Residents
+                </button>
+              </>
+            );
+          }
+        });
+      res.results.map((obj) => {
+        let objarray = [];
+        for (let value of Object.values(obj)) {
+          objarray.push(value);
+        }
+        display.push(objarray);
+        return null;
+      });
+      setDisplayArray(display);
+    });
+  };
+  const redirect = (e, key, redirectCom) => {
+    e.stopPropagation();
 
-function Planets() {
-
-  const data = {
-    header: [
-      'name',
-      'rotation_period',
-      'orbital_period',
-      'diameter',
-      'climate',
-      'gravity',
-      'terrain',
-      'surface_water',
-      'population'
-    ],
-    values: [
-      {
-        'name': 'Tatooine',
-        'rotation_period': '23',
-        'orbital_period': '304',
-        'diameter': '10465',
-        'climate': 'arid',
-        'gravity': '1 standard',
-        'terrain': 'desert',
-        'surface_water': '1',
-        'population': '200000',
-        'residents': [
-          'http://swapi.dev/api/people/1/',
-          'http://swapi.dev/api/people/2/',
-          'http://swapi.dev/api/people/4/',
-          'http://swapi.dev/api/people/6/',
-          'http://swapi.dev/api/people/7/',
-          'http://swapi.dev/api/people/8/',
-          'http://swapi.dev/api/people/9/',
-          'http://swapi.dev/api/people/11/',
-          'http://swapi.dev/api/people/43/',
-          'http://swapi.dev/api/people/62/'
-        ],
-        'films': [
-          'http://swapi.dev/api/films/1/',
-          'http://swapi.dev/api/films/3/',
-          'http://swapi.dev/api/films/4/',
-          'http://swapi.dev/api/films/5/',
-          'http://swapi.dev/api/films/6/'
-        ],
-        'created': '2014-12-09T13:50:49.641000Z',
-        'edited': '2014-12-20T20:58:18.411000Z',
-        'url': 'http://swapi.dev/api/planets/1/'
-      },
-      {
-        'name': 'Alderaan',
-        'rotation_period': '24',
-        'orbital_period': '364',
-        'diameter': '12500',
-        'climate': 'temperate',
-        'gravity': '1 standard',
-        'terrain': 'grasslands, mountains',
-        'surface_water': '40',
-        'population': '2000000000',
-        'residents': [
-          'http://swapi.dev/api/people/5/',
-          'http://swapi.dev/api/people/68/',
-          'http://swapi.dev/api/people/81/'
-        ],
-        'films': [
-          'http://swapi.dev/api/films/1/',
-          'http://swapi.dev/api/films/6/'
-        ],
-        'created': '2014-12-10T11:35:48.479000Z',
-        'edited': '2014-12-20T20:58:18.420000Z',
-        'url': 'http://swapi.dev/api/planets/2/'
-      },
-      {
-        'name': 'Yavin IV',
-        'rotation_period': '24',
-        'orbital_period': '4818',
-        'diameter': '10200',
-        'climate': 'temperate, tropical',
-        'gravity': '1 standard',
-        'terrain': 'jungle, rainforests',
-        'surface_water': '8',
-        'population': '1000',
-        'residents': [],
-        'films': [
-          'http://swapi.dev/api/films/1/'
-        ],
-        'created': '2014-12-10T11:37:19.144000Z',
-        'edited': '2014-12-20T20:58:18.421000Z',
-        'url': 'http://swapi.dev/api/planets/3/'
-      },
-      {
-        'name': 'Hoth',
-        'rotation_period': '23',
-        'orbital_period': '549',
-        'diameter': '7200',
-        'climate': 'frozen',
-        'gravity': '1.1 standard',
-        'terrain': 'tundra, ice caves, mountain ranges',
-        'surface_water': '100',
-        'population': 'unknown',
-        'residents': [],
-        'films': [
-          'http://swapi.dev/api/films/2/'
-        ],
-        'created': '2014-12-10T11:39:13.934000Z',
-        'edited': '2014-12-20T20:58:18.423000Z',
-        'url': 'http://swapi.dev/api/planets/4/'
-      },
-      {
-        'name': 'Dagobah',
-        'rotation_period': '23',
-        'orbital_period': '341',
-        'diameter': '8900',
-        'climate': 'murky',
-        'gravity': 'N/A',
-        'terrain': 'swamp, jungles',
-        'surface_water': '8',
-        'population': 'unknown',
-        'residents': [],
-        'films': [
-          'http://swapi.dev/api/films/2/',
-          'http://swapi.dev/api/films/3/',
-          'http://swapi.dev/api/films/6/'
-        ],
-        'created': '2014-12-10T11:42:22.590000Z',
-        'edited': '2014-12-20T20:58:18.425000Z',
-        'url': 'http://swapi.dev/api/planets/5/'
-      },
-      {
-        'name': 'Bespin',
-        'rotation_period': '12',
-        'orbital_period': '5110',
-        'diameter': '118000',
-        'climate': 'temperate',
-        'gravity': '1.5 (surface), 1 standard (Cloud City)',
-        'terrain': 'gas giant',
-        'surface_water': '0',
-        'population': '6000000',
-        'residents': [
-          'http://swapi.dev/api/people/26/'
-        ],
-        'films': [
-          'http://swapi.dev/api/films/2/'
-        ],
-        'created': '2014-12-10T11:43:55.240000Z',
-        'edited': '2014-12-20T20:58:18.427000Z',
-        'url': 'http://swapi.dev/api/planets/6/'
-      },
-      {
-        'name': 'Endor',
-        'rotation_period': '18',
-        'orbital_period': '402',
-        'diameter': '4900',
-        'climate': 'temperate',
-        'gravity': '0.85 standard',
-        'terrain': 'forests, mountains, lakes',
-        'surface_water': '8',
-        'population': '30000000',
-        'residents': [
-          'http://swapi.dev/api/people/30/'
-        ],
-        'films': [
-          'http://swapi.dev/api/films/3/'
-        ],
-        'created': '2014-12-10T11:50:29.349000Z',
-        'edited': '2014-12-20T20:58:18.429000Z',
-        'url': 'http://swapi.dev/api/planets/7/'
-      },
-      {
-        'name': 'Naboo',
-        'rotation_period': '26',
-        'orbital_period': '312',
-        'diameter': '12120',
-        'climate': 'temperate',
-        'gravity': '1 standard',
-        'terrain': 'grassy hills, swamps, forests, mountains',
-        'surface_water': '12',
-        'population': '4500000000',
-        'residents': [
-          'http://swapi.dev/api/people/3/',
-          'http://swapi.dev/api/people/21/',
-          'http://swapi.dev/api/people/35/',
-          'http://swapi.dev/api/people/36/',
-          'http://swapi.dev/api/people/37/',
-          'http://swapi.dev/api/people/38/',
-          'http://swapi.dev/api/people/39/',
-          'http://swapi.dev/api/people/42/',
-          'http://swapi.dev/api/people/60/',
-          'http://swapi.dev/api/people/61/',
-          'http://swapi.dev/api/people/66/'
-        ],
-        'films': [
-          'http://swapi.dev/api/films/3/',
-          'http://swapi.dev/api/films/4/',
-          'http://swapi.dev/api/films/5/',
-          'http://swapi.dev/api/films/6/'
-        ],
-        'created': '2014-12-10T11:52:31.066000Z',
-        'edited': '2014-12-20T20:58:18.430000Z',
-        'url': 'http://swapi.dev/api/planets/8/'
-      }
-    ],
-    actions: [
-      {
-        label: 'Go to Films',
-        action: (row) => { console.log(`redirect to grid with ${row.films.length} Films`)}
-      },
-      {
-        label: 'Go to Residents',
-        action: (row) => { console.log(`redirect to grid with ${row.residents.length} Residents`)}
-      }
-    ]
-  }
+    if (redirectCom === "films") {
+      props.history.push({
+        pathname: `/planet/${key}/films`,
+        state: {
+          key: key,
+        },
+      });
+    } else {
+      props.history.push({
+        pathname: `/planet/${key}/residents`,
+        state: {
+          key: key,
+        },
+      });
+    }
+  };
+  useEffect(() => {
+    getPlanet();
+  }, [display]);
+  const handleModal = () => {
+    setModal(!modal);
+  };
+  const onDismiss = () => setIsAlert(false);
+  const changeArray = (dataobj) => {
+    setIsAlert(true);
+  };
 
   return (
-    <div className='App'>
-      <Grid data={data} />
-    </div>
+    <>
+      {isAlert && (
+        <Alert color="success" isOpen={isAlert} toggle={onDismiss}>
+          Your data is successfully added.
+        </Alert>
+      )}
+      <div className=" App">
+        <button className="btn btn-info btn-circle mb-2" onClick={handleModal}>
+          Add Planet
+        </button>
+
+        {/* <Grid data={data} /> */}
+        <DataTable data={displayArray} header={header} />
+      </div>
+      {modal && (
+        <PlanetForm handleModal={handleModal} changeArray={changeArray} />
+      )}
+    </>
   );
 }
 
-export default Planets;
+export default withRouter(connect(null, { getPlanet })(Planets));

@@ -1,0 +1,15 @@
+#planetForm {
+  margin: 20px auto;
+}
+.title {
+  margin: 20px 0px;
+  font-weight: bold;
+  text-align: center;
+}
+.modal-dialog {
+  max-width: 50% !important;
+}
+.submit-button {
+  display: flex;
+  justify-content: center;
+}
