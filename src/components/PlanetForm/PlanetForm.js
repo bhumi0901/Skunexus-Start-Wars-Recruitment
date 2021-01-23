@@ -9,13 +9,16 @@ import {
   ModalBody,
   //   ModalFooter,
 } from "reactstrap";
-import { useHistory, withRouter } from "react-router";
+import {
+  // useHistory,
+  withRouter,
+} from "react-router";
 import Select from "react-select";
 import "./PlanetForm.css";
 import InputBox from "../reusable/InputBox";
 // import Modal from "../reusable/Modal";
 function PlanetForm(props) {
-  const history = useHistory();
+  // const history = useHistory();
   const [name, setName] = useState("");
   const [rotation_period, setRotation_period] = useState(null);
   const [orbital_period, setOrbital_period] = useState(null);
@@ -106,7 +109,7 @@ function PlanetForm(props) {
       let terrainArray = [];
       selectedOption.map((obj, key) => {
         terrainArray.push(obj.value);
-        //   return terrainArray;
+        return null;
       });
       let obj = {
         name: name,

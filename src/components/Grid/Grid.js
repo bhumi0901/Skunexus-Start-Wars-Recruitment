@@ -23,8 +23,8 @@ function Grid({ data: { header = [], values = [], actions = [] } }) {
                   <button
                     className={
                       label === "Go to Films"
-                        ? "btn btn-dark"
-                        : "btn btn-secondary"
+                        ? "btn btn-dark mb-2"
+                        : "btn btn-secondary mb-2"
                     }
                     onClick={() => action(row)}
                   >

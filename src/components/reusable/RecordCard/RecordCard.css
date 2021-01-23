@@ -1,0 +1,14 @@
+.recordCard {
+  max-width: 500px;
+  margin: 100px auto;
+}
+.heading {
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+.card-body {
+  box-shadow: 0px 0px 10px 5px #18171729;
+}

@@ -1,5 +1,5 @@
 import { FormGroup, Label, Input } from "reactstrap";
-
+import PropTypes from "prop-types";
 function InputBox(props) {
   return (
     <div className="inputBox">
@@ -17,5 +17,10 @@ function InputBox(props) {
     </div>
   );
 }
-
+InputBox.propTypes = {
+  type: PropTypes.string,
+  name: PropTypes.string,
+  id: PropTypes.string,
+  placeholder: PropTypes.string,
+};
 export default InputBox;
